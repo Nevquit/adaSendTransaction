@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@blockfrost/blockfrost-js": "^3.0.3",
+    "@emurgo/cardano-serialization-lib-nodejs": "^9.1.4",
+    "bip39": "^3.0.4",
+    "cardano-addresses": "^3.7.0",
+    "cbor": "^8.1.0"
+  }
+}
