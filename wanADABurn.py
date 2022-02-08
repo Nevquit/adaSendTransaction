@@ -61,7 +61,7 @@ def adaCrossChain(node,contract_address,abi,groupID,tokenID,cc_amount,fee,tokenA
     print(tx)
     return tx
 
-def wanADABurn(srcChain,count=1):
+def wanADABurn(srcChain,adaAddressDic,count=1):
     if srcChain == 'ETH':
         node = 'http://52.34.91.48:36892'
         contract_address = '0x7b985c9379a13d2adf685aee9cb6d2e3f1809ffb'
@@ -88,13 +88,15 @@ def wanADABurn(srcChain,count=1):
     fee = 0
     pri = '75e975b4659556869b039f1ea5bd7852ef1b11f3a30b5c35d36d0766aa4973c9'
     from_addr = '0xedbdf9e0c92528651dac75d2e9443140a8cb283c'
-
     nonce = w3.eth.getTransactionCount(Web3.toChecksumAddress(from_addr.lower()))
-    adaAddress = 'addr_test1qpu9aa006vh80mstyt0hjpqfa0duhsnnvtga0k5c3pjxr5u8k86p04vf30ug5yfughrkmz7vvgsgcszpsc0ulml2vnts40kery'
     for i in range(0,count):
         # print('nonce is ',nonce)
+        adaAddress = adaAddressDic[i]
+        # adaAddress = 'addr_test1qpu9aa006vh80mstyt0hjpqfa0duhsnnvtga0k5c3pjxr5u8k86p04vf30ug5yfughrkmz7vvgsgcszpsc0ulml2vnts40kery'
         adaCrossChain(node,contract_address,abi,groupID,tokenID,cc_amount,fee,tokenAddr,adaAddress,from_addr,pri,nonce,chainid)
         nonce+=1
 if __name__ == '__main__':
     # wanADABurn(sys.argv[3],count=int(sys.argv[2]))
-    wanADABurn('WAN',count=50)
+    with open('./addressDic.json','r') as f:
+        adaAddressList = json.load(f).keys()
+    wanADABurn('WAN',adaAddressList,count=50)

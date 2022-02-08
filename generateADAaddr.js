@@ -44,7 +44,7 @@ function genAddres(count,mnemonic){
 
         const utxo_privkey = accountKey //Private Key
         .derive(0)
-        .derive(i); 
+        .derive(0); 
         const utxoPubKey = accountKey //UTXO Pub key
         .derive(0) // external
         .derive(0)
@@ -117,7 +117,7 @@ addr_test1qrqlzz029fdmx36j48q5yqvjc8xp6aacww3jpy2skxmgfq6ymqppga6yujd2rzv0a7vf2h
 addr_test1qq43v3lh2lypem8dfc09m4c9c5sm2clhp00p26awcqt4sq0mqf99g2cy2r8ujkyjdehu2ap6zp7alf0gu0ayupz7dj5swfdgld
 */
 
-// genAddres(50,entropy)
+genAddres(50,entropy)
 
 
 

@@ -8,19 +8,7 @@ const { CoinSelection }  = require('./coinSelection'); //Fork from nami wallet
 // Prepare precondition 
 const blockFrostApi =  new BlockFrostAPI({isTestNet:true,projectId:'testnetfNx5FZ138OOIzj7J1D7B5oYIqNSGASf8'});
 const addrsDic = JSON.parse(fs.readFileSync('./addressDic.json'));
-const txBuilder = CardanoWasm.TransactionBuilder.new(
-    // all of these are taken from the mainnet genesis settings
-    // linear fee parameters (a*size + b)
-    CardanoWasm.LinearFee.new(CardanoWasm.BigNum.from_str('44'), CardanoWasm.BigNum.from_str('155381')),
-    // minimum utxo value
-    CardanoWasm.BigNum.from_str('1000000'),
-    // pool deposit
-    CardanoWasm.BigNum.from_str('500000000'),
-    // key deposit  
-    CardanoWasm.BigNum.from_str('2000000'),
-    1000,
-    10000
-);
+
 // util functions
 function buildMetaDataByJson(crossToAddr){
     let itemValue = {
@@ -45,6 +33,13 @@ function toHexString(byteArray) {
       return ('0' + (byte & 0xFF).toString(16)).slice(-2);
     }).join('')
 };
+function sleep(time) {
+  return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+          resolve();
+      }, time);
+  })
+}
 
 //**************** UTXO parses ****************************//
 async function getUTXO(address){
@@ -133,7 +128,7 @@ async function selectUTXOs(fromAddress,toAddress,amount){
 //**************** UTXO parses ****************************//
 
 //*********************Build transaction******************//
-async function buildTransaction(fromAddress,prvKey_fromAddress,toAddress,amount,changeAddress,crossToAddr){
+async function buildTransaction(txBuilder,fromAddress,prvKey_fromAddress,toAddress,amount,changeAddress,crossToAddr){
     const prvBIP32Key = CardanoWasm.Bip32PrivateKey.from_bech32(prvKey_fromAddress);
     const prvKey = prvBIP32Key.to_raw_key()
     
@@ -228,10 +223,21 @@ async function getTxStatus(tx){
 //****************** mian***************************** */
 async function Cross(){
     const fromAddressArr = Object.keys(addrsDic)
-    for (j = 0; j < 1; j++) {
-
-        // let fromAddress = 'addr_test1qpu9aa006vh80mstyt0hjpqfa0duhsnnvtga0k5c3pjxr5u8k86p04vf30ug5yfughrkmz7vvgsgcszpsc0ulml2vnts40kery';
-        // let prvKey_fromAddress = "xprv1cp8jj9h72urp0eqxafmy0pf9hcye32esdjaqm9y3epps8t23xfdzmgsw8a267k826ns9cdcu7gxxtrwpf8hzh06zsat90zlhz3lvzn0z3qmjgudetfln62hay99ym8t6lpulpqcwnrklrmdpzdcxh0tgtvm2eem0"; 
+    for (j = 0; j < 20; j++) {
+      try {
+        let txBuilder = CardanoWasm.TransactionBuilder.new(
+          // all of these are taken from the mainnet genesis settings
+          // linear fee parameters (a*size + b)
+          CardanoWasm.LinearFee.new(CardanoWasm.BigNum.from_str('44'), CardanoWasm.BigNum.from_str('155381')),
+          // minimum utxo value
+          CardanoWasm.BigNum.from_str('1000000'),
+          // pool deposit
+          CardanoWasm.BigNum.from_str('500000000'),
+          // key deposit  
+          CardanoWasm.BigNum.from_str('2000000'),
+          1000,
+          10000
+      );
         let fromAddress = fromAddressArr[j]
         let prvKey_fromAddress = addrsDic[fromAddress]
         let toAddress = 'addr_test1qz3ga6xtwkxn2aevf8jv0ygpq3cpseen68mcuz2fqe3lu0s9ag8xf2vwvdxtt6su2pn6h7rlnnnsqweavyqgd2ru3l3q09lq9e'; //storeman address
@@ -240,9 +246,14 @@ async function Cross(){
         let amount = '1000000'; // Lovelace , 1 ADA = 1,000,000 Lovelace
         let changeAddress = fromAddress;
         // console.log(toAddress)
-        let signedTx = await buildTransaction(fromAddress,prvKey_fromAddress,toAddress,amount,changeAddress,crossToAddr);
+        let signedTx = await buildTransaction(txBuilder,fromAddress,prvKey_fromAddress,toAddress,amount,changeAddress,crossToAddr);
         let txHash = await submit(signedTx);
-        // console.log('txHash: ', txHash);
+        console.log('txHash: ', j, txHash);
+        // sleep(10)
+      } catch (error) {
+        console.log('error===============',error)
+      }
+
 
     }
 
