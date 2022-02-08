@@ -1,7 +1,7 @@
 from web3 import Web3
 import json
 import sys
-with open('/ethPri.json','r') as f:
+with open('./ethPri.json','r') as f:
     priDic = json.load(f)
     pri = priDic['pri']
     from_addr = priDic['from_addr']
@@ -101,5 +101,5 @@ def wanADABurn(srcChain,adaAddressDic,count=1):
 if __name__ == '__main__':
     # wanADABurn(sys.argv[3],count=int(sys.argv[2]))
     with open('./addressDic.json','r') as f:
-        adaAddressList = json.load(f).keys()
-    wanADABurn('WAN',adaAddressList,count=50)
+        adaAddressList = list(json.load(f).keys())
+    wanADABurn('WAN',adaAddressList,count=10)
