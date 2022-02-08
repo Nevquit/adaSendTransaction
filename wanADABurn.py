@@ -1,6 +1,10 @@
 from web3 import Web3
 import json
 import sys
+with open('/ethPri.json','r') as f:
+    priDic = json.load(f)
+    pri = priDic['pri']
+    from_addr = priDic['from_addr']
 class ETH_Sign():
     def __init__(self,node,from_addr,chainid,pri):
         self.w3 = Web3(Web3.HTTPProvider(node))
@@ -86,8 +90,7 @@ def wanADABurn(srcChain,adaAddressDic,count=1):
     groupID = '0x000000000000000000000000000000000000000000746573746e65745f303334' #'0x000000000000000000000000000000000000000000746573746e65745f303231' #
     cc_amount = 1000000
     fee = 0
-    pri = '75e975b4659556869b039f1ea5bd7852ef1b11f3a30b5c35d36d0766aa4973c9'
-    from_addr = '0xedbdf9e0c92528651dac75d2e9443140a8cb283c'
+
     nonce = w3.eth.getTransactionCount(Web3.toChecksumAddress(from_addr.lower()))
     for i in range(0,count):
         # print('nonce is ',nonce)

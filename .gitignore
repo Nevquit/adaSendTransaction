@@ -1,6 +1,7 @@
 # accounts
 addressDic.json
 phraseWord
+ethPri.json
 # Logs
 logs
 *.log
