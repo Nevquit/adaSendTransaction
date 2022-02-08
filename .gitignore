@@ -1,5 +1,6 @@
 # accounts
 addressDic.json
+phraseWord
 # Logs
 logs
 *.log
