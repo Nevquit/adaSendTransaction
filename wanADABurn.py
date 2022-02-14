@@ -66,24 +66,12 @@ def adaCrossChain(node,contract_address,abi,groupID,tokenID,cc_amount,fee,tokenA
     return tx
 
 def wanADABurn(srcChain,adaAddressDic,count=1):
-    if srcChain == 'ETH':
-        node = 'http://52.34.91.48:36892'
-        contract_address = '0x7b985c9379a13d2adf685aee9cb6d2e3f1809ffb'
-        chainid = 4
-        tokenAddr = '0xF451372043C88E5960be1CA6b1AC5e5181a1800B'
-        tokenID = 19
     if srcChain == 'WAN':
         node = 'https://gwan-ssl.wandevs.org:46891'
         contract_address = '0x62De27E16F6F31D9aA5b02f4599fC6e21b339E79'
         chainid = 999
         tokenAddr = '0xa4e62375593662e8ff92fad0ba7fcad25051ebcb'
         tokenID = 110
-    if srcChain == 'AVAX':
-        node = 'https://api.avax-test.network/ext/bc/C/rpc'
-        contract_address = '0x4c200A0867753454Db78AF84d147Bd03e567f234'
-        chainid = 43113
-        tokenAddr = '0x18266E440dDAaA5794E922E7125F453F28A6AFc0'
-        tokenID = 46
     w3 = Web3(Web3.HTTPProvider(node))
     abi = r'abi.CrossDelegate.json'  # abi path
     # groupID = sys.argv[1] #'0x000000000000000000000000000000000000000000746573746e65745f303231' #
