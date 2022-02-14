@@ -11,9 +11,7 @@ const {generateMnemonic,mnemonicToEntropy} = require('bip39')
 //Generate the address
     //Get the rootKey from BIP39 phrase 
 const entropy = mnemonicToEntropy(
-        ["middle", "idea", "asthma", "truck", "scene", "sunset", "jelly" ,
-        "love", "save" ,"wood" ,"tongue", "special", "nut" ,"sock", "into" ,"moon" ,"hip" ,"company", "shell" ,"question" ,"lottery" ,"normal", "use" ,"also"].join(' ')
-      );
+        'phraseWord');
     
     // console.log('rootKey',rootKey)
 const fs = require('fs')
